@@ -8,8 +8,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Random;
 import java.util.Scanner;
+
 
 import static com.example.socket.SocketUtils.sendMessage;
 
@@ -19,13 +19,14 @@ public class SocketClient {
         try (Socket socket = new Socket("192.168.1.22", 8080)) {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            Random random = new Random();
             Scanner scanner = new Scanner(System.in);
-            Client client = new Client(random.nextInt(10));
+            System.out.println("Enter your name:");
+            int name = scanner.nextInt();
+            Client client = new Client(name);
             int i = 0;
             while (i != 1000) {
                 new Thread(() -> {
-                    sendMessage("Client " + client.getId() + " : Hi Server!", printWriter);
+                    sendMessage("Client " + client.getId() + ": ", printWriter);
                 }).start();
                 try {
                     Thread.sleep(3000);
